@@ -30,7 +30,7 @@ str(diabetes)
 #$ S6 : int
 #$ Y  : int
 
-# Realizar un analisis estadstico de las variables: calcular la media, varianza, rangos, etc.
+# Realizar un analisis estadstico de las variables: calcular la media, varianza, rangos, etc.
 # Tienen las distintas variables rangos muy diferentes?.
 dim(diabetes)
 apply(diabetes[-2], 2, mean)
@@ -121,6 +121,7 @@ Diabetes_sinoutliers
 
 dfsplit= Diabetes_sinoutliers
 str(dfsplit)
+
 corte <- floor(nrow(dfsplit)*0.70)         #define % of training and test set
 
 set.seed(9)
@@ -132,48 +133,47 @@ dfsplit_train <- dfsplit[aleatorios, ]
 str(dfsplit_train)
 
 # Generaion de DF test
-dfsplit_test <- dfsplit[-aleatorios, ]
+dfsplit_test <- setdiff(dfsplit,dfsplit_train)
 str(dfsplit_test)
 
 # Escalar los datos para que tengan media 0 y varianza 1, es decir, restar a cada variable numerica su media y dividir 
 # por la desviacion tipica. Calcular la media y desviacion en el conjunto de train, y utilizar esa misma media y
 # desviacion para escalar el conjunto de test.
+head(dfsplit_test)
+head(dfsplit_train)
 
-# Crea una función para normalzar dataframes
-normalizaDF =  function(datos, x) {
-  as.data.frame(
-    Map(function(columna, x) {
-      (columna - x[1]) / x[2]
-    }, datos, x)
-  )
-}
-
-# Obtiene la media y la desviación típica
 valmedia <- numcolwise(mean)(dfsplit_train)
 valdesviacion <- numcolwise(sd)(dfsplit_train)
 
-# Impreme Valores
-valmedia
+for(i in 1:nrow(dfsplit_train)){
+  
+  dfsplit_train[i,c(1:ncol(dfsplit_train))] <- (dfsplit_train[i,c(1:ncol(dfsplit_train))] - valmedia) / valdesviacion
+  
+}
 
-valdesviacion
-
-# Normaliza los dataframe
-med_des <- rbind(valmedia, valdesviacion)
-dfsplit_train_norm <- normalizaDF(dfsplit_train, med_des)
-dfsplit_test_norm <- normalizaDF(dfsplit_test, med_des)
-summary(dfsplit_train_norm)
-summary(dfsplit_test_norm)
+for(i in 1:nrow(dfsplit_test)){
+  
+  dfsplit_test[i,c(1:ncol(dfsplit_test))] <- (dfsplit_test[i,c(1:ncol(dfsplit_test))] - valmedia) / valdesviacion
+  
+}
 
 # Realizar un modelo de regresion lineal de la variable de respuesta sobre el resto y ajustarlo por minimos
 # cuadrados usando unicamente los datos del conjunto de entrenamiento.
 
-regre_dftrin <- lm(Y~ ., data=dfsplit_train)
+regre_dftrin <- lm(Y ~ AGE + BMI + BP + S1 + S2 + S3 + S4 + S5 + S6, data=dfsplit_train)
 summary(regre_dftrin)
+
 
 # Calcular el error cuadratico medio de los datos del conjunto de entrenamiento y de los datos del conjunto
 # de test, de nido como (formula en pdf) donde y es el vector de respuesta de los datos y ^y es el
 # vector que predice el modelo (para los mismos datos).
 
-vpredict <- predict.lm(regre_dftrin, newdata=Diabetes_sinoutliers)
-ERRcuamed <- mean((Diabetes_sinoutliers$Y - vpredict)^2)
+
+vpredict <- predict(regre_dftrin)
+ERRcuamed <- mean((dfsplit_train$Y - vpredict)^2)
 cat("\n Respuesta ECM:", ERRcuamed, "\n")
+
+
+epredict <- predict(regre_dftrin, dfsplit_test)
+ERRcua <- mean((dfsplit_test$Y - epredict)^2)
+cat("\n Respuesta:", ERRcua, "\n")
