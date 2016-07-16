@@ -7,11 +7,14 @@ library(dplyr)
 library(plyr)
 library(outliers)
 
+
+setwd('C:/Users/Giovanni/Documents/Master/TrabajosFinales/R')
+
 # Cargar los datos diabetes.data en R
-diabetestotal <- read.csv("Master/TrabajosFinales/R/diabetes.data", header = TRUE, sep = "\t")
+diabetestotal <- read.csv("diabetes.data", header = TRUE, sep = "\t")
 
 # Eliminar los missing values, que estan codicados como -9999.00
-diabetes <- read.csv("Master/TrabajosFinales/R/diabetes.data", header = TRUE, sep = "\t", na.string="-9999.0")
+diabetes <- read.csv("diabetes.data", header = TRUE, sep = "\t", na.string="-9999.0")
 if (sum(is.na(diabetes)) > 0)
   diabetes <-na.omit(diabetes)
 
