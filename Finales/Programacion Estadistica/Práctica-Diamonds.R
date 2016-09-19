@@ -25,17 +25,17 @@
 # asignando DF Diamonds
 library(ggplot2)
 library(sampling)
-library(SamplingStrata)
 library(e1071)
 library(moments)
 library(prettyR)
 library(plyr)
 library(nortest)
 library(corrplot)
-library(lawstat)
+#library(lawstat)
 library(car)
+library(QuantPsyc)
+library(parcor)
 
-library(ggplot2)
 dt<-as.data.frame(diamonds)
 
 head(dt)
@@ -54,15 +54,14 @@ MuestraVGood<-round(Datoscorte[3,2]*Muestra)
 MuestraPremium<-round(Datoscorte[4,2]*Muestra)
 MuestraIdeal<-round(Datoscorte[5,2]*Muestra)
 
-library(sampling)
 estratos <- strata(dt[order(dt$cut),], stratanames = c("cut"), size = c(MuestraFair,MuestraGood,MuestraVGood,MuestraPremium,MuestraIdeal), method = "srswor")
 dtm <- getdata( dt, estratos )
 drop <- c("ID_unit","Prob","Stratum")
 dtm = dtm[,!(names(dtm) %in% drop)]
 
-# Original
+# Datos df Original
 table(dt$cut)
-# Muestra
+# Datos df Muestra
 table(dtm$cut)
 
 # ******************************** Punto 2: Análisis de las variables ********************************
@@ -278,8 +277,7 @@ boxplot(dtno$price, horizontal = F)
 hist(dtno$price)
 # a pesar de eliminacion de outliers, se visualizan, otros, por lo que se procede a una eliminacion manual. Crearemos un df para este caso.
 dtnoT <- dtno[dtno$price<9000,]
-
-dtno <- dtno[dtno$price<9000,]
+#dtno <- dtno[dtno$price<9000,]
 
 # Se vuelvue a graficar
 boxplot(dtnoT$price, horizontal = F) # ya no se visualizan  ourliers
@@ -486,7 +484,7 @@ reschi <- chisq.test(dtClarity, factorClarity, simulate.p.value=TRUE)
 cat ("Rsultado de Reschi es: ")
 print (reschi)
 cat ("El resultado de pvalue :", reschi$p.value , " es > que 0.05 : " , reschi$p.value > 0.05)
-# Si el p.value es mayor que 0.05, se concluye que son independientes. Para este caso despues de cambiar la muesta varias veces,
+# Si el p.value es mayor que 0.05, se concluye que son independientes. Para este caso despues de cambiar y probar la muesta varias veces,
 # se concluye que son Independientes
 
 
@@ -505,7 +503,7 @@ p.aov<-aov(TrvdtClarity ~ factorClarity)
 summary(p.aov)
 
 # Despues de ejecutar varias veces el ejercicio, 
-# Elvalor de P es mayor que 0.05, se entiende que no hay diferencias significativas, Aceptando la hipotesis de que las medias sean iguales.
+# El valor de P es menor que 0.05, se entiende que no hay diferencias significativas, Rechazando la hipotesis de que las medias sean iguales.
 
 tukey<-TukeyHSD(p.aov) #los intervalos que no contienen el valor 0 son significativos, p-value<0,05
 tukey
@@ -520,6 +518,9 @@ plot(tukey) #se puede ver en el grafico que no hay valores significativos.
 
 # Formular un modelo de regresión y analiza los resultados
 # 
+# Haremos 2 regresesiones 1 simple y una multiple
+#
+# Opcion 1 (simple)
 #	Haremos un modelo de regresion precio(price) del diamante como variable dependiente de carat como variable independiente.
 # Grafico de Relacion
 pairs(dtno)
@@ -539,8 +540,7 @@ summary(regreLineal)
 
 # El analisis del resultado nos indica que tenemos un valor residual de 798.2 con un 87% del comportamiento
 # ademas los valores de Intercep y caract son significativos, mayores al 99.9% 
-# El p-value es próximo a cero, menor de 0.05 por tanto se confirma que la pendiente es distinta de 0,
-# lo que es lo mismo, el coeficiente de correlación poblacional es no nulo y el modelo es adecuado
+# El p-value es próximo a cero, menor de 0.05 por tanto se confirma que la pendiente es distinta de 0 y guardan correlacion
 
 # podemos confirmar con el anova, que exite una correlacion diferente de cero
 anova(regreLineal)
@@ -564,24 +564,92 @@ sd(regreLineal$residuals)
 boxplot(regreLineal$residuals)
 
 plot(regreLineal$fitted.values,regreLineal$residuals)
-abline(0,0)
+abline(0,0, col=2, lwd=3)
 
 # Prueba de Levene para igualdad de varianzas
 grupo=ifelse(dtno$price<quantile(dtno$price,.25),1,
              ifelse(dtno$price>=quantile(dtno$price,.25) & dtno$price<quantile(dtno$price,.5),2,
                     ifelse(dtno$price>=quantile(dtno$price,.5) & dtno$price<quantile(dtno$price,.75),3,4 )      )     )
 
-levene.test(regreLineal$residuals, group = grupo) #p-value 2.2e-16, NO se acepta la igualdad de varianzas, se ebe hacer una tranformacion
+leveneTest(regreLineal$residuals, group = grupo) #p-value 2.2e-16, NO se acepta la igualdad de varianzas, se ebe hacer una tranformacion
+
+shapiro.test(resid(regreLineal)) #p-value 2.2e-16, NO se acepta la igualdad de varianzas, se ebe hacer una tranformacion
 
 # Aplica una transformación a la regresión y analiza los resultados
 #
 spreadLevelPlot(regreLineal) 
-
 ##
 priceT=sqrt(dtno$price)
 rlt <- lm(priceT ~ dtno$carat)
 summary(rlt)
-plot(X,y, xlab = "Publicidad", ylab = "raíz cuadrada de Ventas", main="Gastos de publicidad x volumen de ventas")
-abline(r)
+plot(dtno$carat, priceT)
+abline(rlt, col=2, lwd=3)
+
+# Despues de la transformacion, sigue existiendo un p.value muy bajo
+# por lo que no ha sido exitosa
+
+# Interpreta los coeficientes estandarizados de la regresión
+#
+reglbeta<-lm.beta(regreLineal)
+
+reglbeta
+
+# Opcion 2 (multiple)
+#	Haremos un modelo de regresion precio(price) del diamante como variable dependiente de carat y x(longitud) como variable independiente.
+# Grafico de Relacion
+
+# grafico de distribucion de variables
+par(mfrow=c(1,1))
+datamulti<-dtno
+drop <- c("color","clarity","depth","table","y","z","cut")
+datamulti = datamulti[,!(names(dtm) %in% drop)]
+plot(datamulti)
+
+# Regresion Lineal
+rlm <- lm(price ~ x + carat, data = datamulti)
+rlm
+summary(rlm)
+confint(rlm)
+
+# El analisis del resultado nos indica que tenemos un valor residual de 1527 
+# y que el valor de probabilidad menor de 0.05 por lo tanto rechazamos la hipotesis Nula y que las variables tienen correlacion.
+
+
+# Muestra los residuos y analiza los resultados
+#
+# Residuos
+par(mfrow=c(1,1))
+summary(rlm$residuals)
+sd(rlm$residuals)
+
+plot(resid(rlm))
+abline(0,0, col=2, lwd=3)
+
+# El grafico muestra que la no se ajusta a un modelo, posiblemente porque la varianza es distinta entre los puntos del valor residual
+shapiro.test(sample(resid(lm),maxShapiro))
+
+# COn el safiro test, comprobamos que efectivamente, la distribucion de residuos NO tiene una distribucion normal.
+
+# Aplica una transformación a la regresión y analiza los resultados
+#priceT=sqrt(dtno$price)
+rlmt <- lm(log(price) ~ x + carat, data = datamulti)
+summary(rlmt)
+plot(resid(rlmt))
+abline(0,0, col=2, lwd=3)
+
+shapiro.test(resid(rlmt))
+# Despues de la transformacion, sigue habiendo dispersion de puntos, no se visualiza heterocedasticidadpor 
+# ademas p.value muy bajo, no se logra hacer una transformacion exitosa;
+
+# Interpreta los coeficientes estandarizados de la regresión
+#
+reglbeta<-lm.beta(rlmt)
+rlmt
+
+#	El resultado presentado de regresion lineal multiple demuestra que los valores beta
+#	de x y carat son, en todos los ejemplos siempre nos dio como resultaso, 1 valor negativo y uno positivo,
+# que lo interpreto que el valor positivo (carat), tienen  mayor relevancia sobre la variable dependiente, que es precio.
+
+
 
 
