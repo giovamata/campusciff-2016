@@ -1,0 +1,208 @@
+Date
+Player ID	
+Player Surname	
+Player Forename	
+Team	
+Team Id	
+Opposition	
+Opposition id	
+Venue	
+Position Id	
+Appearances	
+Time Played	
+Starts	
+Substitute On	
+Substitute Off	
+Goals	
+First Goal	
+Winning Goal	
+Shots On Target inc goals	
+Shots Off Target inc woodwork	
+Blocked Shots	
+Penalties Taken	
+Penalty Goals	
+Penalties Saved	
+Penalties Off Target	
+Penalties Not Scored	
+Direct Free-kick Goals	
+Direct Free-kick On Target	
+Direct Free-kick Off Target	
+Blocked Direct Free-kick	
+Goals from Inside Box	
+Shots On from Inside Box	
+Shots Off from Inside Box	
+Blocked Shots from Inside Box	
+Goals from Outside Box	
+Shots On Target Outside Box	
+Shots Off Target Outside Box	
+Blocked Shots Outside Box	
+Headed Goals	
+Headed Shots On Target	
+Headed Shots Off Target	
+Headed Blocked Shots	
+Left Foot Goals	
+Left Foot Shots On Target	
+Left Foot Shots Off Target	
+Left Foot Blocked Shots	
+Right Foot Goals	
+Right Foot Shots On Target	
+Right Foot Shots Off Target	
+Right Foot Blocked Shots	
+Other Goals	
+Other Shots On Target	
+Other Shots Off Target	
+Other Blocked Shots	
+Shots Cleared off Line	
+Shots Cleared off Line Inside Area	
+Shots Cleared off Line Outside Area	
+Goals Open Play	
+Goals from Corners	
+Goals from Throws	
+Goals from Direct Free Kick	
+Goals from Set Play	
+Goals from penalties	
+Attempts Open Play on target	
+Attempts from Corners on target	
+Attempts from Throws on target	
+Attempts from Direct Free Kick on target	
+Attempts from Set Play on target	
+Attempts from Penalties on target	
+Attempts Open Play off target	
+Attempts from Corners off target	
+Attempts from Throws off target	
+Attempts from Direct Free Kick off target	
+Attempts from Set Play off target	
+Attempts from Penalties off target	
+Goals as a substitute	
+Total Successful Passes All	
+Total Unsuccessful Passes All	
+Assists	
+Key Passes	
+Total Successful Passes Excl Crosses Corners	
+Total Unsuccessful Passes Excl Crosses Corners	
+Successful Passes Own Half	
+Unsuccessful Passes Own Half	
+Successful Passes Opposition Half	
+Unsuccessful Passes Opposition Half	
+Successful Passes Defensive third	
+Unsuccessful Passes Defensive third	
+Successful Passes Middle third	
+Unsuccessful Passes Middle third	
+Successful Passes Final third	
+Unsuccessful Passes Final third	
+Successful Short Passes	
+Unsuccessful Short Passes	
+Successful Long Passes	
+Unsuccessful Long Passes	
+Successful Flick-Ons	
+Unsuccessful Flick-Ons	
+Successful Crosses Corners	
+Unsuccessful Crosses Corners	
+Corners Taken incl short corners	
+Corners Conceded	
+Successful Corners into Box	
+Unsuccessful Corners into Box	
+Short Corners	
+Throw Ins to Own Player	
+Throw Ins to Opposition Player	
+Successful Dribbles	
+Unsuccessful Dribbles	
+Successful Crosses Corners Left	
+Unsuccessful Crosses Corners Left	
+Successful Crosses Left	
+Unsuccessful Crosses Left	
+Successful Corners Left	
+Unsuccessful Corners Left	
+Successful Crosses Corners Right	
+Unsuccessful Crosses Corners Right	
+Successful Crosses Right	
+Unsuccessful Crosses Right	
+Successful Corners Right	
+Unsuccessful Corners Right	
+Successful Long Balls	
+Unsuccessful Long Balls	
+Successful Lay-Offs	
+Unsuccessful Lay-Offs	
+Through Ball	
+Successful Crosses Corners in the air	
+Unsuccessful Crosses Corners in the air	
+Successful crosses in the air	
+Unsuccessful crosses in the air	
+Successful open play crosses	
+Unsuccessful open play crosses	
+Touches	
+Goal Assist Corner	
+Goal Assist Free Kick	
+Goal Assist Throw In	
+Goal Assist Goal Kick	
+Goal Assist Set Piece	
+Key Corner	
+Key Free Kick	
+Key Throw In	
+Key Goal Kick	
+Key Set Pieces	
+Duels won	
+Duels lost	
+Aerial Duels won	
+Aerial Duels lost	
+Ground Duels won	
+Ground Duels lost	
+Tackles Won	
+Tackles Lost	
+Last Man Tackle	
+Total Clearances	
+Headed Clearances	
+Other Clearances	
+Clearances Off the Line	
+Blocks	
+Interceptions	
+Recoveries	
+Total Fouls Conceded	
+Fouls Conceded exc handballs pens	
+Total Fouls Won	
+Fouls Won in Danger Area inc pens	
+Fouls Won not in danger area	
+Foul Won Penalty	
+Handballs Conceded	
+Penalties Conceded	
+Offsides	
+Yellow Cards	
+Red Cards	
+Goals Conceded	
+Goals Conceded Inside Box	
+Goals Conceded Outside Box	
+Saves Made	
+Saves Made from Inside Box	
+Saves Made from Outside Box	
+Saves from Penalty	
+Catches	Punches	Drops	
+Crosses not Claimed	
+GK Distribution	
+GK Successful Distribution	
+GK Unsuccessful Distribution	
+Clean Sheets	
+Team Clean sheet	
+Error leading to Goal	
+Error leading to Attempt	
+Challenge Lost	
+Shots On Conceded	
+Shots On Conceded Inside Box	
+Shots On Conceded Outside Box	
+Team Formation	
+Position in Formation	
+Turnovers	
+Dispossessed	
+Big Chances	
+Big Chances Faced	
+Pass Forward	
+Pass Backward	
+Pass Left	
+Pass Right	
+Unsuccessful Ball Touch	
+Successful Ball Touch	
+Take-Ons Overrun	
+CompId	
+SeasId	
+Touches open play final third	
+Touches open play opp box	
+Touches open play opp six yards
